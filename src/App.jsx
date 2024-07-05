@@ -1,26 +1,41 @@
-// import { useState } from "react";
-import Google from "./Components/Google";
+import { useState } from "react";
+import CreateNote from "./Components/CreateNote";
+import Footer from "./Components/Footer";
+import Header from "./Components/Header";
+import Note from "./Components/Note";
 
 function App() {
-  // const [count, setCount] = useState(0);
-  // const Event = () => {
-  //   setCount(count + 1);
-  // };
+  const [addItem, setAddItem] = useState([]);
+  const addNote = (note) => {
+    setAddItem((prev) => {
+      return [...prev, note]
+    })
+  }
 
-  // const EventOne = () => {
-  //   if (count === 0) {
-  //     setCount(0);
-  //     alert('Not less than Zero')
-  //   } else {
-  //     setCount(count - 1);
-  //   }
-  // };
+  const onDelete = (id) => {
+    setAddItem((oldData) => {
+      oldData.filter((currData, index) => {
+        return index !== id;
+      })
+    })
+  }
+
+
   return (
-    <div>
-      {/* <h1>{count}</h1>
-      <button onClick={Event}>inc</button>
-      <button onClick={EventOne}>dec</button> */}
-      <Google/>
+    <div >
+      <Header />
+      <CreateNote passNote={addNote} />
+      {addItem.map((val, index) => {
+        return (
+          <Note key={index}
+            id={index}
+            title={val.title}
+            content={val.textarea}
+            deleteItem={onDelete}
+          />
+        );
+      })}
+      <Footer />
     </div>
   );
 }
